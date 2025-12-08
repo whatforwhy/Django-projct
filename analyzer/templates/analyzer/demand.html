@@ -1,0 +1,83 @@
+{% extends 'analyzer/base.html' %}
+
+{% block title %}Востребованность - {{ profession.name }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Востребованность профессии {{ profession.name }}</h2>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">Динамика уровня зарплат по годам 1{{ salary_by_year }}1</h3>
+            </div>
+            <div class="card-body">
+                {% if salary_by_year %}
+                    <div class="table-responsive">
+                        {{ salary_by_year.content|safe }}
+                    </div>
+                    <p class="text-muted mt-2">Источник данных: {{ salary_by_year.data_source }}</p>
+                    <p class="text-muted">Последнее обновление: {{ salary_by_year.last_updated|date:"d.m.Y H:i" }}</p>
+                {% else %}
+                    <div class="alert alert-warning">Данные не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">График динамики уровня зарплат</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if salary_by_year and salary_by_year.chart_image %}
+                    <img src="{{ salary_by_year.chart_image.url }}" class="img-fluid" alt="График зарплат по годам">
+                {% else %}
+                    <div class="alert alert-warning">График не найден</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">Динамика количества вакансий по годам</h3>
+            </div>
+            <div class="card-body">
+                {% if vacancies_by_year %}
+                    <div class="table-responsive">
+                        {{ vacancies_by_year.content|safe }}
+                    </div>
+                    <p class="text-muted mt-2">Источник данных: {{ vacancies_by_year.data_source }}</p>
+                    <p class="text-muted">Последнее обновление: {{ vacancies_by_year.last_updated|date:"d.m.Y H:i" }}</p>
+                {% else %}
+                    <div class="alert alert-warning">Данные не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">График динамики количества вакансий</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if vacancies_by_year and vacancies_by_year.chart_image %}
+                    <img src="{{ vacancies_by_year.chart_image.url }}" class="img-fluid" alt="График вакансий по годам">
+                {% else %}
+                    <div class="alert alert-warning">График не найден</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <h4 class="alert-heading">Информация о востребованности</h4>
+    <p>На этой странице представлена информация о востребованности профессии {{ profession.name }} на рынке труда.</p>
+    <p>Графики и таблицы показывают динамику изменения уровня зарплат и количества вакансий по годам, что позволяет оценить тенденции развития профессии.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'analyzer/base.html' %}
+
+{% block title %}Навыки - {{ profession.name }}{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Навыки профессии {{ profession.name }}</h2>
+
+{% if skills_by_year %}
+    {% for skill_year in skills_by_year %}
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="card-title h5">ТОП-20 навыков за {{ skill_year.year }} год</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {{ skill_year.content|safe }}
+                        </div>
+                        <p class="text-muted mt-2">Источник данных: {{ skill_year.data_source }}</p>
+                        <p class="text-muted">Последнее обновление: {{ skill_year.last_updated|date:"d.m.Y H:i" }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="card-title h5">График ТОП-20 навыков за {{ skill_year.year }} год</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if skill_year.chart_image %}
+                            <img src="{{ skill_year.chart_image.url }}" class="img-fluid" alt="График навыков за {{ skill_year.year }} год">
+                        {% else %}
+                            <div class="alert alert-warning">График не найден</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-warning">Данные о навыках не найдены</div>
+{% endif %}
+
+<div class="alert alert-info">
+    <h4 class="alert-heading">Информация о навыках</h4>
+    <p>На этой странице представлена информация о наиболее востребованных навыках для профессии {{ profession.name }}.</p>
+    <p>Графики и таблицы показывают топ-20 навыков по годам, что позволяет отслеживать изменения требований к профессии с течением времени.</p>
+</div>
+{% endblock %}

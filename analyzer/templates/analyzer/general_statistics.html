@@ -1,0 +1,175 @@
+{% extends 'analyzer/base.html' %}
+
+{% block title %}Общая статистика{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Общая статистика</h2>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">Динамика уровня зарплат по годам</h3>
+            </div>
+            <div class="card-body">
+                {% if salary_by_year %}
+                    <div class="table-responsive">
+                        {{ salary_by_year.content|safe }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">Данные не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">График динамики уровня зарплат</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if salary_by_year and salary_by_year.chart_image %}
+                    <img src="{{ salary_by_year.chart_image.url }}" class="img-fluid" alt="График зарплат по годам">
+                {% else %}
+                    <div class="alert alert-warning">График не найден</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">Динамика количества вакансий по годам</h3>
+            </div>
+            <div class="card-body">
+                {% if vacancies_by_year %}
+                    <div class="table-responsive">
+                        {{ vacancies_by_year.content|safe }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">Данные не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">График динамики количества вакансий</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if vacancies_by_year and vacancies_by_year.chart_image %}
+                    <img src="{{ vacancies_by_year.chart_image.url }}" class="img-fluid" alt="График вакансий по годам">
+                {% else %}
+                    <div class="alert alert-warning">График не найден</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">Уровень зарплат по городам</h3>
+            </div>
+            <div class="card-body">
+                {% if salary_by_city %}
+                    <div class="table-responsive">
+                        {{ salary_by_city.content|safe }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">Данные не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">График уровня зарплат по городам</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if salary_by_city and salary_by_city.chart_image %}
+                    <img src="{{ salary_by_city.chart_image.url }}" class="img-fluid" alt="График зарплат по городам">
+                {% else %}
+                    <div class="alert alert-warning">График не найден</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">Доля вакансий по городам</h3>
+            </div>
+            <div class="card-body">
+                {% if vacancies_by_city %}
+                    <div class="table-responsive">
+                        {{ vacancies_by_city.content|safe }}
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">Данные не найдены</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h3 class="card-title h5">График доли вакансий по городам</h3>
+            </div>
+            <div class="card-body text-center">
+                {% if vacancies_by_city and vacancies_by_city.chart_image %}
+                    <img src="{{ vacancies_by_city.chart_image.url }}" class="img-fluid" alt="График доли вакансий по городам">
+                {% else %}
+                    <div class="alert alert-warning">График не найден</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mb-3">ТОП-20 навыков по годам</h3>
+{% if skills_by_year %}
+    {% for skill_year in skills_by_year %}
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="card-title h5">ТОП-20 навыков за {{ skill_year.year }} год</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {{ skill_year.content|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="card-title h5">График ТОП-20 навыков за {{ skill_year.year }} год</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        {% if skill_year.chart_image %}
+                            <img src="{{ skill_year.chart_image.url }}" class="img-fluid" alt="График навыков за {{ skill_year.year }} год">
+                        {% else %}
+                            <div class="alert alert-warning">График не найден</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-warning">Данные о навыках не найдены</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'analyzer/base.html' %}
+
+{% block title %}{{ profession.name }} - Главная{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">{{ profession.name }}</h2>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Описание профессии</h3>
+                <p class="card-text">{{ profession.description|linebreaks }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        {% if images %}
+            <div id="professionCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for image in images %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ image.image.url }}" class="d-block w-100 rounded" alt="{{ profession.name }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if images.count > 1 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#professionCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#professionCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                Изображения для профессии не добавлены.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Ключевые слова для поиска</h3>
+                <p class="card-text">
+                    {% for keyword in profession.keywords.split %}
+                        <a href="https://hh.ru/search/vacancy?text={{ keyword }}" target="_blank" class="badge bg-primary me-1">{{ keyword }}</a>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
